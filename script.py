@@ -105,8 +105,8 @@ else:
     df_sel["is_loss"] = (df_sel["game_result"] == "L").astype(int)
 
     # cumsum respetando orden actual del df_sel
-    df_sel["Acum Ganados"] = df_sel["is_win"].cumsum()
-    df_sel["Acum Perdidos"] = df_sel["is_loss"].cumsum()
+    df_sel["Ganados (Total)"] = df_sel["is_win"].cumsum()
+    df_sel["Perdidos (Total)"] = df_sel["is_loss"].cumsum()
 
     col1_up, col2_up = st.columns([3, 1])
 
@@ -117,13 +117,13 @@ else:
         fig_line = px.line(
             df_sel,
             x="game_date" if "game_date" in df_sel.columns and df_sel["game_date"].notna().any() else "seasongame",
-            y=["Acum Ganados", "Acum Perdidos"],
+            y=["Ganados (Total)", "Perdidos (Total)"],
             labels={"value": "Acumulado", "variable": "Tipo", "game_date": "Fecha", "seasongame": "Juego #"},
             title=f"Acumulado de juegos ganados y perdidos — {selected_team} ({selected_year})",
             template="plotly_white",
             color_discrete_map={
-                "Acum Ganados": "#53ed6a",
-                "Acum Perdidos": "#e43131"
+                "Ganados (Total)": "#53ed6a",
+                "Perdidos (Total)": "#e43131"
             }
         )
         st.plotly_chart(fig_line, use_container_width=True)
