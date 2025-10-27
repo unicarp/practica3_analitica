@@ -120,7 +120,11 @@ else:
             y=["Acum Ganados", "Acum Perdidos"],
             labels={"value": "Acumulado", "variable": "Tipo", "game_date": "Fecha", "seasongame": "Juego #"},
             title=f"Acumulado de juegos ganados y perdidos — {selected_team} ({selected_year})",
-            template="plotly_white"
+            template="plotly_white",
+            color_discrete_map={
+                "Acum Ganados": "#53ed6a",
+                "Acum Perdidos": "#e43131"
+            }
         )
         st.plotly_chart(fig_line, use_container_width=True)
 
@@ -135,8 +139,7 @@ else:
             names=["Ganados", "Perdidos"],
             values=[total_wins, total_losses],
             title="Porcentaje de juegos ganados vs perdidos",
-            # Se elimina 'hole=0.35' para que sea un círculo completo
-            color_discrete_sequence=["#B21E1E", "#FF4C4C"] # Tonos de rojo: oscuro para Ganados, claro para Perdidos
+            color_discrete_sequence=["#53ed6a", "#e43131"]
         )
         st.plotly_chart(fig_pie, use_container_width=True)
 
@@ -145,12 +148,12 @@ else:
     # ---------------------------
     col1, col2 = st.columns(2)
     with col1:
-        st.metric("Juegos totales", total_wins + total_losses)
-        st.metric("Victorias", total_wins)
+        st.metric("Juegos totales:", total_wins + total_losses)
+        st.metric("Victorias:", total_wins)
     with col2:
-        st.metric("Derrotas", total_losses)
+        st.metric("Derrotas:", total_losses)
         if total_wins + total_losses > 0:
-            st.metric("Win %", f"{total_wins / (total_wins + total_losses) * 100:.2f}%")
+            st.metric("Win Rate:", f"{total_wins / (total_wins + total_losses) * 100:.2f}%")
 
     st.markdown("### Tabla (últimos juegos)")
     st.dataframe(df_sel[["season", "seasongame", "game_date", "team", "game_result", "type", "pts", "opp_id", "opp_pts"]].sort_values(
